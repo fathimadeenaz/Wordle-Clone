@@ -98,6 +98,7 @@ const checkRow = () => {
         // console.log(guessRows[currentRow])
 
         colorTile(guessRows[currentRow])
+        colorKey()
 
         if (wordle == guess) {
             console.log('you\'ve guessed the wordle!')
@@ -136,11 +137,11 @@ const colorTile = (guessRow) => {
     guessRowArray = guessRow
     wordleArray = [...wordle]
 
-    for(let k = 0; k < 5; k++) {
-        if(wordleArray[k] === guessRowArray[k]) {
-            green.push(k)
-            wordleArray[k] = 1
-            guessRowArray[k] = 1
+    for(let i = 0; i < 5; i++) {
+        if(wordleArray[i] === guessRowArray[i]) {
+            green.push(i)
+            wordleArray[i] = 1
+            guessRowArray[i] = 1
         }
     }
 
@@ -172,3 +173,43 @@ const colorTile = (guessRow) => {
     addClass(green, 'correct')
 }
 
+const colorKey = () => {
+    for(let i = 0; i < 5; i++) {
+        
+        const green = 'rgb(106, 170, 100)'
+        const yellow = 'rgb(201, 180, 88)'
+        const grey = 'rgb(120, 124, 126)'
+
+
+        let colorClass = document.querySelector(getTile(i)).className.slice(5)
+        let letter = document.querySelector(getTile(i)).textContent
+        // console.log(colorClass)
+        // console.log(letter)
+
+        let newColor = colorClass === 'present' ? yellow : (colorClass === 'correct' ? green : grey)
+        // console.log(newColor)
+
+        // let oldColor = document.querySelector(`#${letter}`).style.backgroundColor
+        let oldColor = window.getComputedStyle(document.querySelector(`#${letter}`)).backgroundColor
+        // console.log(`oldColor ${oldColor}`)
+
+
+        if (oldColor === green) {
+            newColor = oldColor
+        } 
+
+        if (oldColor === yellow) {
+            if(newColor === green) newColor = green
+            else newColor = oldColor
+        }
+
+        if (oldColor === grey) {
+            if(newColor === green) newColor = green
+            else if(newColor === yellow) newColor = yellow
+            else newColor = oldColor
+        }
+
+        // console.log(`newColor ${newColor}`)
+        document.querySelector(`#${letter}`).style.backgroundColor = newColor
+    }
+}
