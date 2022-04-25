@@ -93,11 +93,11 @@ const deleteLetter = () => {
 const checkRow = () => {
     const guess = guessRows[currentRow].join('').toUpperCase()
     if (currentTile > 4) {
+
         // console.log(`guess is ${guess} \n wordle is ${wordle}`)
         // console.log(guessRows[currentRow])
 
-        // colorTile(guessRows[currentRow])
-        colorTile1(guessRows[currentRow])
+        colorTile(guessRows[currentRow])
 
         if (wordle == guess) {
             console.log('you\'ve guessed the wordle!')
@@ -118,120 +118,57 @@ const checkRow = () => {
     }
 }
 
-
+function addClass(arr, className) {
+    for(let i = 0; i < arr.length; i++) {
+        // console.log(getTile(arr[i]))
+        document.querySelector(getTile(arr[i])).classList.add(className)
+    }
+}
 
 const getTile = (tilePosition) => { return '#guessRow-' + currentRow + '-tile-' + tilePosition }
-/*
-const present = (guessWord) => {
-
-    const temp = []
-    for (let i = 0; i < guessWord.length ; i++) {
-        console.log(guessWord[i]);
-        if(wordle.indexOf(guessWord[i]) != -1) temp.push(i)
-    }
-    return temp;
-}
-
-const absent = (guessWord) => {
-
-    const temp = []
-    for (let i = 0; i < guessWord.length ; i++) {
-        console.log(guessWord[i]);
-        if(wordle.indexOf(guessWord[i]) == -1) temp.push(i)
-    }
-    return temp;
-}
 
 const colorTile = (guessRow) => {
-    const guessWord = guessRow.toString().replaceAll(',','')
 
-    // for(let i = 0; i < 5; i++){
-    //     document.querySelector(getTile(i)).classList.add('absent')
-    // }
+    green = []
+    yellow = []
+    grey = []
 
-    notInWord = absent(guessWord)
-    notInWord.forEach(element => {
-            document.querySelector(getTile(element)).classList.add('absent')
-            // document.querySelector(getTile(element)).classList.remove('absent')
-    });
-
-    // inWord = present(guessWord)
-    // // console.log(inWord);
-    // inWord.forEach(element => {
-    //     document.querySelector(getTile(element)).classList.add('present')
-    //     document.querySelector(getTile(element)).classList.remove('absent')
-    // });
-    
-    for(let i = 0; i < 5; i++) {
-        const rowTile = document.querySelector(getTile(i))
-        if(guessRow[i] === [...wordle][i]) {
-            // rowTile.classList.remove('present')
-            rowTile.classList.add('correct')
-        }
-    }    
-}
-
-*/
-
-
-
-const colorTile1 = (guessRow) => {
-
-    gre=[]
-    yel=[]
-    not=[]
-
-    GA = guessRow
-    WA = [...wordle]
+    guessRowArray = guessRow
+    wordleArray = [...wordle]
 
     for(let k = 0; k < 5; k++) {
-        if(WA[k] === GA[k]) {
-            gre.push(k)
-            WA[k] = 1
-            GA[k] = 1
+        if(wordleArray[k] === guessRowArray[k]) {
+            green.push(k)
+            wordleArray[k] = 1
+            guessRowArray[k] = 1
         }
     }
 
-    // console.log(WA);
-    // console.log(GA);
+    // console.log(wordleArray);
+    // console.log(guessRowArray);
 
     for(let i = 0; i < 5; i++) {
-        // console.log(GA[i])
-        if(GA[i] === 1) {
+        // console.log(guessRowArray[i])
+        if(guessRowArray[i] === 1) {
             // console.log('skipping');
             continue;
         }
 
-        // else{
-
-        if(WA.join('').includes(GA[i])) {
-            yel.push(i)
-            WA[WA.indexOf(GA[i])] = '1'
+        if(wordleArray.join('').includes(guessRowArray[i])) {
+            yellow.push(i)
+            wordleArray[wordleArray.indexOf(guessRowArray[i])] = '1'
             // console.log(y)
         }
 
-        else not.push(i)
-    }
-    // }
-
-    // console.log(gre)
-    // console.log(yel)
-    // console.log(not)
-
-    for(let n = 0; n < not.length; n++) {
-        // console.log(getTile(not[n]))
-        document.querySelector(getTile(not[n])).classList.add('absent')
+        else grey.push(i)
     }
 
-    for(let y = 0; y < yel.length; y++) {
-        // console.log(getTile(yel[y]))
-        document.querySelector(getTile(yel[y])).classList.add('present')
-    }
+    // console.log(green)
+    // console.log(yellow)
+    // console.log(grey)
 
-    
-
-    for(let g = 0; g < gre.length; g++) {
-        // console.log(getTile(gre[g]))
-        document.querySelector(getTile(gre[g])).classList.add('correct')
-    }
+    addClass(grey, 'absent')
+    addClass(yellow, 'present')
+    addClass(green, 'correct')
 }
+
