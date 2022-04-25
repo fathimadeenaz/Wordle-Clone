@@ -95,7 +95,10 @@ const checkRow = () => {
     if (currentTile > 4) {
         // console.log(`guess is ${guess} \n wordle is ${wordle}`)
         // console.log(guessRows[currentRow])
-        colorTile(guessRows[currentRow])
+
+        // colorTile(guessRows[currentRow])
+        colorTile1(guessRows[currentRow])
+
         if (wordle == guess) {
             console.log('you\'ve guessed the wordle!')
             isGameOver = true
@@ -103,7 +106,7 @@ const checkRow = () => {
         } else {
             if (currentRow >= 5) {
                 isGameOver = true
-                console.log('game over')
+                console.log('game over \nthe wordle was',wordle)
                 return
             }
             if (currentRow < 5) {
@@ -115,8 +118,10 @@ const checkRow = () => {
     }
 }
 
-const getTile = (tilePosition) => { return '#guessRow-' + currentRow + '-tile-' + tilePosition }
 
+
+const getTile = (tilePosition) => { return '#guessRow-' + currentRow + '-tile-' + tilePosition }
+/*
 const present = (guessWord) => {
 
     const temp = []
@@ -127,62 +132,106 @@ const present = (guessWord) => {
     return temp;
 }
 
+const absent = (guessWord) => {
+
+    const temp = []
+    for (let i = 0; i < guessWord.length ; i++) {
+        console.log(guessWord[i]);
+        if(wordle.indexOf(guessWord[i]) == -1) temp.push(i)
+    }
+    return temp;
+}
+
 const colorTile = (guessRow) => {
-
-    // const rowTiles = document.querySelector('#guessRow-' + currentRow).childNodes
-    // console.log(rowTiles);
-
-    //console.log([...wordle]) //wordlestring to arr
-    //console.log(guessRow.toString().replaceAll(',','')) //guessrow arr to string
-
     const guessWord = guessRow.toString().replaceAll(',','')
 
+    // for(let i = 0; i < 5; i++){
+    //     document.querySelector(getTile(i)).classList.add('absent')
+    // }
 
-
-    // {[...wordle].forEach(letter => {
-    //     if(guessWord.includes(letter.toString())) rowTile.classList.add('present');
-    // });}
-
-    for(let i = 0; i < 5; i++){
-        document.querySelector(getTile(i)).classList.add('absent')
-    }
-
-
-
-    inWord = present(guessWord)
-    // console.log(inWord);
-
-    inWord.forEach(element => {
-        document.querySelector(getTile(element)).classList.add('present')
-        document.querySelector(getTile(element)).classList.remove('absent')
-
+    notInWord = absent(guessWord)
+    notInWord.forEach(element => {
+            document.querySelector(getTile(element)).classList.add('absent')
+            // document.querySelector(getTile(element)).classList.remove('absent')
     });
+
+    // inWord = present(guessWord)
+    // // console.log(inWord);
+    // inWord.forEach(element => {
+    //     document.querySelector(getTile(element)).classList.add('present')
+    //     document.querySelector(getTile(element)).classList.remove('absent')
+    // });
     
     for(let i = 0; i < 5; i++) {
         const rowTile = document.querySelector(getTile(i))
-        
-        // if(present(guessWord)) {
-        //     rowTile.classList.add('present')
-        //}
-
-        
-
         if(guessRow[i] === [...wordle][i]) {
-
-            // const rowTile = document.querySelector(getTile(i))
-            // const rowTile = document.getElementById(`guessRow-${currentRow}-tile-${i}`)
-            // const rowTile = document.querySelector(getTile(i))
-            // console.log(rowTile)
-
-            rowTile.classList.remove('present')
+            // rowTile.classList.remove('present')
             rowTile.classList.add('correct')
-
-            // console.log(rowTile.classList);
-            // console.log("at correct pos",i)
-            // console.log(Object.entries(rowTiles)[i].slice(-1));
-            // console.log(typeof Object.entries(rowTiles)[i].slice(-1));
-
-            
         }
     }    
+}
+
+*/
+
+
+
+const colorTile1 = (guessRow) => {
+
+    gre=[]
+    yel=[]
+    not=[]
+
+    GA = guessRow
+    WA = [...wordle]
+
+    for(let k = 0; k < 5; k++) {
+        if(WA[k] === GA[k]) {
+            gre.push(k)
+            WA[k] = 1
+            GA[k] = 1
+        }
+    }
+
+    // console.log(WA);
+    // console.log(GA);
+
+    for(let i = 0; i < 5; i++) {
+        // console.log(GA[i])
+        if(GA[i] === 1) {
+            // console.log('skipping');
+            continue;
+        }
+
+        // else{
+
+        if(WA.join('').includes(GA[i])) {
+            yel.push(i)
+            WA[WA.indexOf(GA[i])] = '1'
+            // console.log(y)
+        }
+
+        else not.push(i)
+    }
+    // }
+
+    // console.log(gre)
+    // console.log(yel)
+    // console.log(not)
+
+    for(let n = 0; n < not.length; n++) {
+        // console.log(getTile(not[n]))
+        document.querySelector(getTile(not[n])).classList.add('absent')
+    }
+
+    for(let y = 0; y < yel.length; y++) {
+        // console.log(getTile(yel[y]))
+        document.querySelector(getTile(yel[y])).classList.add('present')
+    }
+
+    
+
+    for(let g = 0; g < gre.length; g++) {
+        // console.log(getTile(gre[g]))
+        document.querySelector(getTile(gre[g])).classList.add('correct')
+    }
 }
