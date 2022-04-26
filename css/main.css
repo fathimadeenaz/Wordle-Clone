@@ -1,16 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&display=swap");
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0; }
 
 body {
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
   height: 100vh; }
 
 #title-container {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 100%; }
+  justify-content: space-between;
+  text-align: center;
+  width: 100%;
+  border-bottom: 1px solid #D3D6DA;
+  font-family: "Noto Serif", serif;
+  font-weight: bolder;
+  font-size: 18px;
+  padding: 0 16px;
+  letter-spacing: 0.001em; }
+  #title-container #help {
+    height: 24px; }
 
 #game-container {
   display: flex;
@@ -23,10 +34,11 @@ body {
   display: flex; }
 
 #board-container .tile {
-  border: 2px solid;
-  min-width: 60px;
-  min-height: 60px;
-  font-size: 50px;
+  border: 2px #D3D6DA solid;
+  min-width: 50px;
+  min-height: 50px;
+  font-size: 2rem;
+  line-height: 2rem;
   font-weight: bold;
   text-transform: uppercase;
   margin: 2px;
@@ -43,33 +55,41 @@ body {
     width: 100%;
     margin: 0 auto 8px; }
     #keyboard-container .keyboard-row button {
-      font-family: inherit;
+      background-color: #D3D6DA;
       font-weight: bold;
       border: 0;
       padding: 0;
       height: 58px;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       flex-grow: 1;
       text-transform: uppercase;
       margin-right: 6px;
       border-radius: 4px;
       user-select: none; }
+    #keyboard-container .keyboard-row button.key {
+      min-width: 43px; }
     #keyboard-container .keyboard-row button.wide-button {
-      flex-grow: 1.5; }
+      flex-grow: 1.5;
+      min-width: 65.4px; }
+      #keyboard-container .keyboard-row button.wide-button svg {
+        margin-left: -3px; }
     #keyboard-container .keyboard-row .spacer-half {
       flex-grow: 0.5; }
 
 .correct {
   background-color: #6AAA64;
-  color: white;
+  color: #FFF;
   border-color: #6AAA64 !important; }
 
 .present {
   background-color: #C9B458;
-  color: white;
+  color: #FFF;
   border-color: #C9B458 !important; }
 
 .absent {
   background-color: #787C7E;
-  color: white;
+  color: #FFF;
   border-color: #787C7E !important; }
