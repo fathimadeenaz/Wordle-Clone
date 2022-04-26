@@ -1,7 +1,7 @@
-const tileDisplay = document.querySelector('#board-container')
+const boardDisplay = document.querySelector('#board-container')
 const keys = document.querySelectorAll(".keyboard-row button");
 
-// console.log(tileDisplay)
+// console.log(boardDisplay)
 
 
 const wordle = "HEIST"
@@ -30,7 +30,7 @@ guessRows.forEach((guessRow, guessRowIndex) => {
         tileElement.classList.add('tile')
         rowElement.append(tileElement)
     })
-    tileDisplay.append(rowElement)
+    boardDisplay.append(rowElement)
 })
 
 keys.forEach(key => {
@@ -38,6 +38,15 @@ keys.forEach(key => {
 })
 
 window.addEventListener('keyup', (e) => handleKeyUp(e.key))
+
+window.addEventListener('keypress', (e) => handleKeyPress(e.key))
+
+const handleKeyPress = (key) => {
+    console.log(key);
+    if(key.keyCode == 9){
+        return false;
+    }
+}
 
 
 const handleClick = (letter) => {
@@ -56,7 +65,6 @@ const handleClick = (letter) => {
 }
 
 const handleKeyUp = (letter) => {
-    // console.log(e)
     if (!isGameOver) {
         if (letter === 'Backspace') {
             deleteLetter()
@@ -66,7 +74,9 @@ const handleKeyUp = (letter) => {
             checkRow()
             return
         }
-        else if (letter >= 'a' && letter <= 'z') addLetter(letter)
+        else if (letter.length == 1) {
+            if ((letter >= 'a' && letter <= 'z') || (letter >= 'A' && letter <= 'Z')) addLetter(letter)
+        }
     }
 }
 
@@ -77,7 +87,6 @@ const addLetter = (letter) => {
         tile.textContent = letter
         tile.style.borderColor = '#878a8c'
         guessRows[currentRow][currentTile] = letter.toUpperCase()
-        // tile.setAttribute('data', letter)
         currentTile++
     }
 }
@@ -89,7 +98,6 @@ const deleteLetter = () => {
         tile.textContent = ''
         tile.style.borderColor = ''
         guessRows[currentRow][currentTile] = ''
-        // tile.setAttribute('data', '')
     }
 }
 
@@ -122,14 +130,14 @@ const checkRow = () => {
     }
 }
 
-function addClass(arr, className) {
+const addClass = (arr, className) => {
     for(let i = 0; i < arr.length; i++) {
         // console.log(getTile(arr[i]))
         document.querySelector(getTile(arr[i])).classList.add(className)
     }
 }
 
-const getTile = (tilePosition) => { return '#guessRow-' + currentRow + '-tile-' + tilePosition }
+const getTile = (currentTile) => { return '#guessRow-' + currentRow + '-tile-' + currentTile }
 
 const colorTile = (guessRow) => {
 
@@ -220,3 +228,31 @@ const colorKey = () => {
 }
 
 
+
+const animate = gsap.timeline({ paused: true });
+const animateBackground = new TimelineMax({ paused: true });
+let toggle = true;
+
+// animateBackground
+//     .to("body", 0.1, { backgroundImage: "none", backgroundColor: "#111" }, 0.2)
+//     .set(".switch", { boxShadow: "0 0 10px rgba(255, 255, 255, 0.2)" })
+//     .to(".text p", 0.1, { color: "#FFF" }, 0.2);
+
+animate
+    .to(".toggle-button", 0.2, { scale: 0.7 }, 0)
+    .set(".toggle", { backgroundColor: "#FFF" })
+    .set(".circle", { display: "none" })
+    .to(".moon-mask", 0.2, { translateY: 32, translateX: -21 }, 0.2)
+    .to(".toggle-button", 0.2, { translateX: 18  }, 0.2)
+    .to(".toggle-button", 0.2, { scale: 1 })
+
+document.getElementsByClassName("switch")[0].addEventListener("click", () => {
+    if(toggle){
+        animate.restart();
+        // animateBackground.restart();
+    } else {
+        animate.reverse();
+        // animateBackground.reverse();
+    }
+    toggle = !toggle;
+});
