@@ -233,26 +233,36 @@ const animate = gsap.timeline({ paused: true });
 const animateBackground = new TimelineMax({ paused: true });
 let toggle = true;
 
-// animateBackground
-//     .to("body", 0.1, { backgroundImage: "none", backgroundColor: "#111" }, 0.2)
-//     .set(".switch", { boxShadow: "0 0 10px rgba(255, 255, 255, 0.2)" })
-//     .to(".text p", 0.1, { color: "#FFF" }, 0.2);
+animateBackground
+    .to("body", 0.1, { backgroundColor: "#000" }, 0.2)
+    .to("h1", 0.1, { color: "#FFF" }, 0.2)
+    .to("path", 0.1, { fill: "#FFF" }, 0.2)
+    .to("#title-container", 0.1, { borderColor: "#3A3A3C" }, 0.2)
+    .to("button", 0.1, { backgroundColor: "#818384", color: "#FFF" }, 0.2)
+    .to(".tile", 0.1, { /*borderColor: "#3A3A3C",*/ color: "#FFF" }, 0.2)
+    // .to(".correct", 0.1, { backgroundColor: "#538D4E", color: "#FFF", borderColor: "#538D4E" }, 0.2)
+    // .to(".present", 0.1, { backgroundColor: "#B59F3B", color: "#FFF", borderColor: "#B59F3B" }, 0.2)
+    // .to(".absent", 0.1, { backgroundColor: "#3A3A3C", color: "#FFF", borderColor: "#3A3A3C" }, 0.2)
+    
+
 
 animate
     .to(".toggle-button", 0.2, { scale: 0.7 }, 0)
     .set(".toggle", { backgroundColor: "#FFF" })
     .set(".circle", { display: "none" })
+    .set(".switch", { backgroundColor: "#565758" })
     .to(".moon-mask", 0.2, { translateY: 32, translateX: -21 }, 0.2)
     .to(".toggle-button", 0.2, { translateX: 18  }, 0.2)
     .to(".toggle-button", 0.2, { scale: 1 })
 
 document.getElementsByClassName("switch")[0].addEventListener("click", () => {
     if(toggle){
+        console.log('in dark mode');
         animate.restart();
-        // animateBackground.restart();
+        animateBackground.restart();
     } else {
         animate.reverse();
-        // animateBackground.reverse();
+        animateBackground.reverse();
     }
     toggle = !toggle;
 });
