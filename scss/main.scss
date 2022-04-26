@@ -1,3 +1,6 @@
+@import "config";
+
+
 *{
     box-sizing: border-box;
     margin: 0;
@@ -5,22 +8,36 @@
 }
 
 body {
+    font-family: $font-body;
     height: 100vh;
 }
 
 #title-container{
     display: flex;
     align-items: center;
-    justify-content: center;
-    // border-bottom: 2px solid;
+    justify-content: space-between;
+    text-align: center;
     width: 100%;
+    border-bottom: 1px solid $light-border;
+    font-family: $font-header;
+    font-weight: bolder;
+    font-size: 18px;
+    padding: 0 16px;
+    letter-spacing: 0.001em;
+
+    #help{
+        height: 24px;
+    }
 }
+
+
 
 #game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    // height: 100vh;
     height: 100%;
 }
 
@@ -30,10 +47,11 @@ body {
     }
 
     .tile{
-        border: 2px solid;
-        min-width: 60px;
-        min-height: 60px;
-        font-size: 50px;
+        border: 2px $light-border solid;
+        min-width: 50px;
+        min-height: 50px;
+        font-size: 2rem;
+        line-height: 2rem;
         font-weight: bold;
         text-transform: uppercase;
         margin: 2px;
@@ -55,13 +73,17 @@ body {
         margin: 0 auto 8px;
 
         button {
-            // background-color: aqua;
-            font-family: inherit;
+            background-color: $light-border;
+            // color: #000;
             font-weight: bold;
             border: 0;
             padding: 0;
             height: 58px;
+            // width: 48px;
             cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             flex-grow: 1;
             text-transform: uppercase;
             margin-right: 6px;
@@ -70,8 +92,17 @@ body {
         
         } 
 
+        button.key {
+            min-width: 43px;
+        }
+
         button.wide-button {
             flex-grow: 1.5;
+            min-width: 65.4px;
+
+            svg {
+                margin-left: -3px;
+            }
         }
 
         .spacer-half {
@@ -82,19 +113,19 @@ body {
 }
 
 .correct {
-    background-color: #6AAA64;
-    color: white;
-    border-color: #6AAA64 !important;
+    background-color: $light-green;
+    color: $dark-text;
+    border-color: $light-green !important;
 }
 
 .present {
-    background-color: #C9B458;
-    color: white;
-    border-color: #C9B458 !important;
+    background-color: $light-yellow;
+    color: $dark-text;
+    border-color: $light-yellow !important;
 }
 
 .absent {
-    background-color: #787C7E;
-    color: white;
+    background-color: $light-grey;
+    color: $dark-text;
     border-color:#787C7E !important;
 }

@@ -4,7 +4,7 @@ const keys = document.querySelectorAll(".keyboard-row button");
 // console.log(tileDisplay)
 
 
-const wordle = "OLIVE"
+const wordle = "HEIST"
 
 
 let currentRow = 0
@@ -37,12 +37,28 @@ keys.forEach(key => {
     key.addEventListener('click', () => handleClick(key.innerHTML))
 })
 
-window.addEventListener('keydown', (e) => handleKeyDown(e.key))
+window.addEventListener('keyup', (e) => handleKeyUp(e.key))
 
 
 const handleClick = (letter) => {
     if (!isGameOver) {
-        if (letter === '⌫') {
+        if (letter >= 'a' && letter <= 'z') addLetter(letter)
+        
+        else if (letter === 'Enter') {
+            checkRow()
+            return
+        }
+        else {
+            deleteLetter()
+            return
+        }
+    }
+}
+
+const handleKeyUp = (letter) => {
+    // console.log(e)
+    if (!isGameOver) {
+        if (letter === 'Backspace') {
             deleteLetter()
             return
         }
@@ -50,22 +66,7 @@ const handleClick = (letter) => {
             checkRow()
             return
         }
-        else addLetter(letter)
-    }
-}
-
-const handleKeyDown = (e) => {
-    // console.log(e)
-    if (!isGameOver) {
-        if (e === 'Backspace') {
-            deleteLetter()
-            return
-        }
-        else if (e === 'Enter') {
-            checkRow()
-            return
-        }
-        else if (e >= 'a' && e <= 'z') addLetter(e)
+        else if (letter >= 'a' && letter <= 'z') addLetter(letter)
     }
 }
 
@@ -74,8 +75,9 @@ const addLetter = (letter) => {
     if (currentTile < 5 && currentRow < 6) {
         const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
         tile.textContent = letter
+        tile.style.borderColor = '#878a8c'
         guessRows[currentRow][currentTile] = letter.toUpperCase()
-        tile.setAttribute('data', letter)
+        // tile.setAttribute('data', letter)
         currentTile++
     }
 }
@@ -85,8 +87,9 @@ const deleteLetter = () => {
         currentTile--
         const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
         tile.textContent = ''
+        tile.style.borderColor = ''
         guessRows[currentRow][currentTile] = ''
-        tile.setAttribute('data', '')
+        // tile.setAttribute('data', '')
     }
 }
 
@@ -211,5 +214,9 @@ const colorKey = () => {
 
         // console.log(`newColor ${newColor}`)
         document.querySelector(`#${letter}`).style.backgroundColor = newColor
+        document.querySelector(`#${letter}`).style.color = 'rgb(255,255,255)'
+        // console.log(window.getComputedStyle(document.querySelector(`#${letter}`)).color);
     }
 }
+
+
