@@ -5,6 +5,8 @@ const messageDisplay = document.getElementById('message-container')
 // console.log(boardDisplay)
 
 
+// var today = new Date();
+
 const wordle = "HEIST"
 
 
@@ -88,6 +90,8 @@ const addLetter = (letter) => {
         tile.textContent = letter
         // tile.style.borderColor = '#878a8c'
         tile.classList.add('tile-active')
+        tile.classList.add('animate__bounceIn')
+        tile.style.setProperty('--animate-duration', '0.3s');
         guessRows[currentRow][currentTile] = letter.toUpperCase()
         currentTile++
     }
@@ -100,6 +104,7 @@ const deleteLetter = () => {
         tile.textContent = ''
         // tile.style.borderColor = ''
         tile.classList.remove('tile-active')
+        tile.classList.remove('animate__bounceIn')
         guessRows[currentRow][currentTile] = ''
     }
 }
@@ -112,7 +117,12 @@ const checkRow = () => {
         // console.log(guessRows[currentRow])
 
         colorTile(guessRows[currentRow])
-        colorKey()
+
+
+        setTimeout(colorKey,1202)
+
+        // setTimeout(colorKey,1203)
+        // colorKey()
 
         if (wordle == guess) {
             isGameOver = true
@@ -141,16 +151,28 @@ const showMessage = (message) => {
     // messageDisplay.style.display = 'block'
     const messageElement = document.createElement('p')
     messageElement.textContent = message
-    messageDisplay.append(messageElement)
-    if(!isGameOver) setTimeout(() => messageDisplay.removeChild(messageElement), 1500)
+    setTimeout(() => messageDisplay.append(messageElement), 1700)
+    if(!isGameOver) setTimeout(() => messageDisplay.removeChild(messageElement), 3000)
 }
+
+// const addTileAnimation = i => {
+//     document.querySelector(i).classList.add('flip')
+//     // document.querySelector(i).classList.add('animate__flipInX') 
+//     // document.querySelector(i).style.setProperty('--animate-duration', '1.5s');
+// }
 
 const addClass = (arr, className) => {
     for(let i = 0; i < arr.length; i++) {
         // console.log(getTile(arr[i]))
+        // setTimeout(addTileAnimation, 2000, getTile(arr[i]))
+        // setTimeout(addTileAnimation, 1000*i, getTile(arr[i]))
         document.querySelector(getTile(arr[i])).classList.add(className)
+        // document.querySelector(getTile(arr[i])).classList.add('flip')
+
     }
 }
+
+
 
 const getTile = (currentTile) => { return '#guessRow-' + currentRow + '-tile-' + currentTile }
 
@@ -194,26 +216,97 @@ const colorTile = (guessRow) => {
     // console.log(yellow)
     // console.log(grey)
 
+
+
+    // document.querySelector(getTile(currentTile)).classList.add('animate__flipInX') 
+
+
+
+    // cr=currentRow
+    // console.log(cr);
+
+    //for(let i = 0; i < 5; i++) {    
+    //    setTimeout(() => {
+    //        document.querySelector('#guessRow-' + currentRow + '-tile-' + i).classList.add('flip')
+    //        console.log(currentRow);
+
+            // addClass(grey, 'absent')
+            // addClass(yellow, 'present')
+            // addClass(green, 'correct')
+
+    //    }, 1000*i)
+    //}
+
+    // setTimeout(addClass, 1000, grey, 'absent')
+    // setTimeout(addClass, 1000, yellow, 'present')
+    // setTimeout(addClass, 1000, green, 'correct')
+
+    // setTimeout(() => document.querySelector('#guessRow-0' + '-tile-' + 0).classList.add('flip'), 200)
+
+
+    
+    for(let i = 0; i < 5; i++) {
+        k = currentRow - 1
+        // console.log(getTile(i));
+        setTimeout(() => {
+            document.querySelector('#guessRow-' + k + '-tile-' + i).classList.add('tile-before')
+            // document.querySelector('.tile-after').style.opacity = '1'
+        }, i)
+        setTimeout(() => {
+            document.querySelector('#guessRow-' + k + '-tile-' + i).classList.remove('tile-before')
+            document.querySelector('#guessRow-' + k + '-tile-' + i).classList.add('flip', 'tile-after')
+            // document.querySelector('.tile-after').style.opacity = '1'
+            // console.log(today.getSeconds())
+            // console.log(Date.now());
+
+
+        }, 300*i)
+
+        // setTimeout(colorKey,1202)
+        k++ 
+    }
+    
+    
+    
     addClass(grey, 'absent')
     addClass(yellow, 'present')
     addClass(green, 'correct')
+
+
+    
+
+
+
 }
 
+
+const getTile1 = (cr, currentTile) => { return '#guessRow-' + cr + '-tile-' + currentTile }
+
+
 const colorKey = () => {
+    console.log('-------------------------');
+    
     for(let i = 0; i < 5; i++) {
-
-        console.log(toggle);
         
-        const green = toggle ? 'rgb(106, 170, 100)' : 'rgb(83, 141, 78)'
-        const yellow = toggle ? 'rgb(201, 180, 88)' : 'rgb(181, 159, 59)'
-        const grey = toggle ? 'rgb(120, 124, 126)' : 'rgb(58, 58, 60)'
+        cr = currentRow-1
+        // console.log(toggle);
+        
+        // const green = toggle ? 'rgb(106, 170, 100)' : 'rgb(83, 141, 78)'
+        // const yellow = toggle ? 'rgb(201, 180, 88)' : 'rgb(181, 159, 59)'
+        // const grey = toggle ? 'rgb(120, 124, 126)' : 'rgb(58, 58, 60)'
 
+        // console.log(getTile1(i));
 
-        let colorClass = document.querySelector(getTile(i)).className.slice(17)
-        let letter = document.querySelector(getTile(i)).textContent
+        let colorClass = document.querySelector(getTile1(cr, i)).className.slice(-23, -16)
+
+        classList = document.querySelector(getTile1(cr, i)).classList
+        let letter = document.querySelector(getTile1(cr, i)).textContent
+
+        // console.log(getTile1(cr, i))
+
         let key = document.querySelector(`#${letter}`)
 
-        // console.log(colorClass)
+        console.log(colorClass)
         // console.log(letter)
 
         // let newColor = colorClass === 'present' ? yellow : (colorClass === 'correct' ? green : grey)
@@ -224,25 +317,29 @@ const colorKey = () => {
         // console.log(`oldColor ${oldColor}`)
 
 
-        if (colorClass === 'correct') {
-            key.classList.add('correct-key')
-        } 
+        
 
         if (colorClass === 'present') {
             if (key.classList.contains('correct-key')) {}
             else key.classList.add('present-key')
         }
 
-        if (colorClass === 'absent') {
+        else if (colorClass === ' absent') {
             if (key.classList.contains('correct-key')) {}
             else if (key.classList.contains('present-key')) {}
             else key.classList.add('absent-key')
         }
 
+        else {
+            if (key.classList.contains('present-key')) key.classList.remove('present-key')
+            key.classList.add('correct-key')
+        } 
+
         // console.log(`newColor ${newColor}`)
         // document.querySelector(`#${letter}`).style.backgroundColor = newColor
         // document.querySelector(`#${letter}`).style.color = 'rgb(255,255,255)'
         // console.log(window.getComputedStyle(document.querySelector(`#${letter}`)).color);
+        cr--
     }
 }
 
