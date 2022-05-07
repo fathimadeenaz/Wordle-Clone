@@ -115,8 +115,10 @@ const checkRow = () => {
         // setTimeout(colorKey,1203)
         // colorKey()
 
-        if (wordle == guess) {
+        if (wordle === guess) {
             isGameOver = true
+            currentRow++
+
             showMessage('Superb')
             // console.log('you\'ve guessed the wordle!')
             return
@@ -233,21 +235,23 @@ const colorKey = () => {
 
         let key = document.querySelector(`#${letter}`)
 
-        // console.log(colorClass)
+        // console.log(letter,colorClass)
 
+        
+        if (colorClass === ' absent') {
+            if (key.classList.contains('correct-key')) {}
+            else if (key.classList.contains('present-key')) {}
+            else key.classList.add('absent-key')
+        }
+        
         if (colorClass === 'present') {
             if (key.classList.contains('correct-key')) {}
             else key.classList.add('present-key')
         }
 
-        else if (colorClass === ' absent') {
-            if (key.classList.contains('correct-key')) {}
-            else if (key.classList.contains('present-key')) {}
-            else key.classList.add('absent-key')
-        }
-
-        else {
+        if (colorClass === 'correct') {
             if (key.classList.contains('present-key')) key.classList.remove('present-key')
+            if (key.classList.contains('absent-key')) key.classList.remove('absent-key')
             key.classList.add('correct-key')
         } 
 
