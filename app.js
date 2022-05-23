@@ -109,6 +109,7 @@ const deleteLetter = () => {
         tile.textContent = ''
         tile.classList.remove('tile-active')
         tile.classList.remove('animate__bounceIn')
+        tile.classList.remove('wrong')
         guessRows[currentRow][currentTile] = ''
     }
 }
@@ -125,6 +126,12 @@ const checkRow = () => {
 
                 if (json.hasOwnProperty('resolution')) {
                     showMessage('Not in word list')
+                    guessRows[currentRow].forEach((tile, index) => {
+                        // console.log(index);
+                        document.querySelector(getTile(index)).classList.remove('animate__bounceIn')
+                        document.querySelector(getTile(index)).classList.add('wrong')
+                    })
+
                     return
                 } else {
 
