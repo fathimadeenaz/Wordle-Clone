@@ -3,7 +3,17 @@ const keys = document.querySelectorAll('.keyboard-row button')
 const messageDisplay = document.getElementById('message-container')
 
 
-const wordle = "HEIST"
+let wordle
+
+const getWordle = () => {
+    fetch('http://localhost:8000/word')
+        .then(response => response.json())
+        .then(json => {
+            console.log(json)
+            wordle = json.toUpperCase()
+        }).catch(err => console.log(err))
+}
+getWordle()
 
 
 let currentRow = 0
@@ -107,35 +117,44 @@ const checkRow = () => {
     const guess = guessRows[currentRow].join('').toUpperCase()
     if (currentTile > 4) {
 
-        colorTile(guessRows[currentRow])
+        fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${guess}`)
+            .then(response => response.json())
+            .then(json => {
 
+                
 
-        setTimeout(colorKey,1202)
+                if (json.hasOwnProperty('resolution')) {
+                    showMessage('Not in word list')
+                    return
+                } else {
 
-        // setTimeout(colorKey,1203)
-        // colorKey()
+                    colorTile(guessRows[currentRow])
+                    setTimeout(colorKey,1202)
 
-        if (wordle === guess) {
-            isGameOver = true
-            currentRow++
+                    if (wordle === guess) {
+                        isGameOver = true
+                        currentRow++
+                        showMessage('Superb')
+                        // console.log('you\'ve guessed the wordle!')
+                        return
+                    } else {
+                        if (currentRow >= 5) {
+                            isGameOver = true
+                            showMessage(wordle)
+                            // console.log('game over \nthe wordle was',wordle)
+                            return
+                        }
+                        if (currentRow < 5) {
+                            currentRow++
+                            currentTile = 0
+                            showMessage('Try Again')
+                            // console.log('try having another guess')
+                        }
+                    }
+                }      
 
-            showMessage('Superb')
-            // console.log('you\'ve guessed the wordle!')
-            return
-        } else {
-            if (currentRow >= 5) {
-                isGameOver = true
-                showMessage(wordle)
-                // console.log('game over \nthe wordle was',wordle)
-                return
-            }
-            if (currentRow < 5) {
-                currentRow++
-                currentTile = 0
-                showMessage('Try Again')
-                // console.log('try having another guess')
-            }
-        }
+            }).catch(err => console.log(err))
+
     }
 }
 
