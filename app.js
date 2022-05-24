@@ -6,7 +6,7 @@ const messageDisplay = document.getElementById('message-container')
 let wordle
 
 const getWordle = () => {
-    fetch('http://localhost:8000/word')
+    fetch('https://just-another-wordle-clone.herokuapp.com/word')
         .then(response => response.json())
         .then(json => {
             console.log(json)
