@@ -3,7 +3,17 @@ const keys = document.querySelectorAll('.keyboard-row button')
 const messageDisplay = document.getElementById('message-container')
 
 
-const wordle = "HEIST"
+let wordle
+
+const getWordle = () => {
+    fetch('https://just-another-wordle-clone.herokuapp.com/word')
+        .then(response => response.json())
+        .then(json => {
+            console.log(json)
+            wordle = json.toUpperCase()
+        }).catch(err => console.log(err))
+}
+getWordle()
 
 
 let currentRow = 0
@@ -99,6 +109,7 @@ const deleteLetter = () => {
         tile.textContent = ''
         tile.classList.remove('tile-active')
         tile.classList.remove('animate__bounceIn')
+        tile.classList.remove('wrong')
         guessRows[currentRow][currentTile] = ''
     }
 }
@@ -107,35 +118,50 @@ const checkRow = () => {
     const guess = guessRows[currentRow].join('').toUpperCase()
     if (currentTile > 4) {
 
-        colorTile(guessRows[currentRow])
+        fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${guess}`)
+            .then(response => response.json())
+            .then(json => {
 
+                
 
-        setTimeout(colorKey,1202)
+                if (json.hasOwnProperty('resolution')) {
+                    showMessage('Not in word list')
+                    guessRows[currentRow].forEach((tile, index) => {
+                        // console.log(index);
+                        document.querySelector(getTile(index)).classList.remove('animate__bounceIn')
+                        document.querySelector(getTile(index)).classList.add('wrong')
+                    })
 
-        // setTimeout(colorKey,1203)
-        // colorKey()
+                    return
+                } else {
 
-        if (wordle === guess) {
-            isGameOver = true
-            currentRow++
+                    colorTile(guessRows[currentRow])
+                    setTimeout(colorKey,1202)
 
-            showMessage('Superb')
-            // console.log('you\'ve guessed the wordle!')
-            return
-        } else {
-            if (currentRow >= 5) {
-                isGameOver = true
-                showMessage(wordle)
-                // console.log('game over \nthe wordle was',wordle)
-                return
-            }
-            if (currentRow < 5) {
-                currentRow++
-                currentTile = 0
-                showMessage('Try Again')
-                // console.log('try having another guess')
-            }
-        }
+                    if (wordle === guess) {
+                        isGameOver = true
+                        currentRow++
+                        showMessage('Superb')
+                        // console.log('you\'ve guessed the wordle!')
+                        return
+                    } else {
+                        if (currentRow >= 5) {
+                            isGameOver = true
+                            showMessage(wordle)
+                            // console.log('game over \nthe wordle was',wordle)
+                            return
+                        }
+                        if (currentRow < 5) {
+                            currentRow++
+                            currentTile = 0
+                            showMessage('Try Again')
+                            // console.log('try having another guess')
+                        }
+                    }
+                }      
+
+            }).catch(err => console.log(err))
+
     }
 }
 

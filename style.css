@@ -332,6 +332,10 @@ path {
   transform: rotate(235deg); 
 }
 
+.wrong {
+  animation: shakeX;
+  animation-duration: 1s;
+}
 
 .flip {
   animation: 0.5s linear flipping !important;
